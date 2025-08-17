@@ -11,15 +11,8 @@
     <name>TechFix</name>
     <modules>
         <module>common</module>
+        <module>auth-service</module>
     </modules>
-
-    <!--    <modules>-->
-<!--        <module>common</module>-->
-<!--        <module>auth-service</module>-->
-<!--        <module>request-service</module>-->
-<!--        <module>notification-service</module>-->
-<!--        <module>reporting-service</module>-->
-<!--    </modules>-->
 
     <properties>
         <java.version>21</java.version>
