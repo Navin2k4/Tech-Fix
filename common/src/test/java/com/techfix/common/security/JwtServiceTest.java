@@ -22,7 +22,7 @@ class JwtServiceTest {
         String token = jwtService.generateToken(testUser);
 
         assertNotNull(token);
-        assertTrue(jwtService.isTokenValid(token, testUser));
+        assertTrue(jwtService.isTokenValid(token));
         assertEquals("testUser", jwtService.extractUsername(token));
     }
 

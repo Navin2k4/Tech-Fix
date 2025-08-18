@@ -1,18 +1,19 @@
 package com.techfix.common.security;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
@@ -43,7 +44,13 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(Map.of("role", userDetails.getAuthorities()), userDetails);
+        return generateToken(
+                Map.of("roles", userDetails.getAuthorities()
+                        .stream()
+                        .map(auth -> auth.getAuthority())
+                        .collect(Collectors.toList())),
+                userDetails
+        );
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -59,6 +66,21 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> roles = claims.get("roles", List.class);
+        return roles != null ? roles : List.of();
     }
 
     private boolean isTokenExpired(String token) {
