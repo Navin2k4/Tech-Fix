@@ -1,8 +1,7 @@
 {
-  "name": "requestit-frontend",
+  "name": "tech-fix-frontend",
   "private": true,
-  "author": "Navin Kumaran",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,18 +13,19 @@
     "@hookform/resolvers": "^5.1.1",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
-    "bson": "^6.10.4",
     "flowbite-react": "^0.11.8",
+    "lucide-react": "^0.540.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
     "react-icons": "^5.5.0",
+    "react-learn-auth-server": "file:..",
     "react-learn-server": "file:..",
     "react-router-dom": "^7.6.3",
     "react-spinners": "^0.17.0",
-    "slugify": "^1.6.6",
     "tailwindcss": "^4.1.11",
-    "zod": "^4.0.2",
+    "tw-animate-css": "^1.3.7",
+    "zod": "^3.25.74",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
