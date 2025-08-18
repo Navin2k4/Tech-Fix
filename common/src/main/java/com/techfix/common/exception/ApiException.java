@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 /**
  * Unified API exception with factory methods for standard HTTP errors.
  */
-@Getter
 public class ApiException extends RuntimeException {
     private final HttpStatus status;
     private final String error;
@@ -17,6 +16,19 @@ public class ApiException extends RuntimeException {
         this.status = status;
         this.error = error;
         this.message = message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 
     public static ApiException badRequest(String message) {
