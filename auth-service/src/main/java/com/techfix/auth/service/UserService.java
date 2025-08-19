@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Data
 @Service
 @RequiredArgsConstructor
@@ -70,7 +74,16 @@ public class UserService {
             throw ApiException.forbidden("User account is disabled");
         }
 
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
+        claims.put("email", user.getEmail());
+        claims.put("roles", user.getAuthorities()
+                .stream()
+                .map(auth -> auth.getAuthority())
+                .collect(Collectors.toList()));
+        claims.put("enabled", user.isEnabled());
+
+        var jwtToken = jwtService.generateToken(claims, user);
         return new AuthenticationResponse(jwtToken);
     }
 

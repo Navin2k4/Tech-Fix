@@ -17,7 +17,7 @@ const Register = () => {
       setLoading(true);
       setError("");
       setSuccess("");
-      const response = await axiosInstance.post("/auth/signup", data);
+      const response = await axiosInstance.post("/api/v1/auth/register", data);
       const responseData = response.data;
       if (!responseData.success) {
         setError(responseData.error?.message || "Something went wrong");

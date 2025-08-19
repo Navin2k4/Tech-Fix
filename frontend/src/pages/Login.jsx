@@ -5,6 +5,7 @@ import { loginFields } from "../constants/formFields";
 import { useAuthStore } from "../hooks/authStore.js";
 import { loginSchema } from "../schemas/schemas";
 import axiosInstance from "../utils/axiosInstance.js";
+import {jwtDecode} from "jwt-decode";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -18,21 +19,26 @@ const Login = () => {
       setLoading(true);
       setError("");
       setSuccess("");
-      console.log(data);
+const response = await axiosInstance.post("/api/v1/auth/authenticate", data);
 
-      const response = await axiosInstance.post("/auth/signin", data);
-      const responseData = response.data;
-      if (!responseData.success) {
-        setError(responseData.error?.message || "Something went wrong");
-        return;
-      }
-      console.log(responseData.data);
-      const { user } = responseData.data;
-      setAuth({ user });
-      setSuccess(responseData.message || "Login successful");
-      setTimeout(() => {
-        navigate("/dashboard", {replace: true});
-      }, 1500);
+const token = response.data.token;
+const decoded = jwtDecode(token);
+
+console.log("Decoded JWT: ", decoded);
+
+setAuth({
+  user: {
+    id: decoded.id,
+    email: decoded.email,
+    roles: decoded.roles,
+    enabled: decoded.enabled
+  },
+  token
+});
+
+setTimeout(() => {
+  navigate("/dashboard", { replace: true });
+}, 1500);
     } catch (err) {
       const serverError = err.response?.data?.error;
       if (serverError?.message) {
